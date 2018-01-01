@@ -1,14 +1,18 @@
-lavalink.js
-=============
+# lavalink.js
 
-A Lavalink client for discord.js ported from eris-lavalink
+A [Lavalink](https://github.com/Frederikam/Lavalink) client for [discord.js](https://github.com/hydrabolt/discord.js) ported from [eris-lavalink](https://github.com/briantanner/eris-lavalink)
 
-**Install**
+## Links
+- **[API Documentation](https://briantanner.github.io/lavalink.js/index.html)**
+- **[Lavalink](https://github.com/Frederikam/Lavalink)**
+
+
+## Install
 ```
 npm install lavalink.js
 ```
 
-**Implementation**
+## Implementation
 
 Start by creating the `PlayerManager` and passing a list of nodes and optional list of regions
 ```js
