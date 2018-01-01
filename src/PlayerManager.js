@@ -146,7 +146,7 @@ class PlayerManager extends Map {
    * @private
    */
   onDisconnect(node, msg) { // eslint-disable-line
-    const players = this.filter(player => player.node.host === node.host);
+    const players = [...this.values()]filter(player => player.node.host === node.host);
     for (const player of players) {
       this.queueFailover(this.switchNode.bind(this, player, true));
     }
