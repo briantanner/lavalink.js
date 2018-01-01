@@ -6,16 +6,19 @@ const Lavalink = require('./Lavalink');
 const Player = require('./Player');
 
 /**
- * Drop in Replacement for the eris voice connection manager
- * @class PlayerManager
+ * Player Manager
  * @extends Map
+ * @prop {Player} baseObject The player class used to create new players
+ * @prop {Object} client The discord.js client
+ * @prop {Object} defaultRegions The default region config
+ * @prop {Object} regions The region config being used
  */
 class PlayerManager extends Map {
 
   /**
    * PlayerManager constructor
-   * @param {Client} client Eris client
-   * @param {Object[]} nodes The Lavalink nodes to connect to
+   * @param {Client} client Discord.js client
+   * @param {Map<string, Lavalink>} nodes The Lavalink nodes to connect to
    * @param {Object} [options] Setup options
    * @param {string} [options.defaultRegion] The default region
    * @param {Number} [options.failoverRate=250] Failover rate in ms

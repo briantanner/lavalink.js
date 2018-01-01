@@ -19,6 +19,9 @@
   "dependencies": {
     "ws": "^3.1.0"
   },
+  "peerDependencies": {
+    "eventemitter3": "^3.0.0"
+  },
   "devDependencies": {
     "discord.js": "^11.2.1",
     "eslint": "^4.14.0",

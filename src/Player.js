@@ -10,9 +10,19 @@ try {
 }
 
 /**
- * Represents a player connection to a lavalink node
- * @class Player
+ * Represents a player/voice connection to Lavalink
  * @extends EventEmitter
+ * @prop {string} id Guild id for the player
+ * @prop {PlayerManager} manager Reference to the player manager
+ * @prop {Lavalink} node Lavalink node the player is connected to
+ * @prop {Object} client The discord.js client
+ * @prop {string} hostname Hostname of the lavalink node
+ * @prop {string} guildId Guild ID
+ * @prop {string} channelId Channel ID
+ * @prop {boolean} ready If the connection is ready
+ * @prop {boolean} playing If the player is playing
+ * @prop {Object} state The lavalink player state
+ * @prop {string} track The lavalink track to play
  */
 class Player extends EventEmitter {
 
@@ -31,15 +41,15 @@ class Player extends EventEmitter {
   constructor(id, { hostname, guildId, channelId, client, node, manager, options }) {
     super();
     this.id = id;
+    this.client = client;
+    this.manager = manager || null;
     this.node = node;
     this.hostname = hostname;
     this.guildId = guildId;
     this.channelId = channelId;
-    this.manager = manager || null;
     this.options = options;
     this.ready = false;
     this.playing = false;
-    this.client = client;
     this.state = {};
     this.track = null;
     this.receivedEvents = [];
@@ -77,7 +87,7 @@ class Player extends EventEmitter {
    * @param {*} data The payload to send
    * @private
    */
-  async sendEvent(data) {
+  sendEvent(data) {
     this.receivedEvents.push(data);
     this.node.send(data);
     process.nextTick(() => this.checkEventQueue());
@@ -176,7 +186,7 @@ class Player extends EventEmitter {
     this.node.send({
       op: 'pause',
       guildId: this.guildId,
-      pause: pause
+      pause: Boolean(pause)
     });
   }
 
@@ -185,6 +195,8 @@ class Player extends EventEmitter {
    * @param {Number} position The position to seek to
    */
   seek(position) {
+    position = parseInt(position);
+    if (!Number.isInteger(position)) throw 'Position must be a integer';
     this.node.send({
       op: 'seek',
       guildId: this.guildId,
@@ -197,6 +209,8 @@ class Player extends EventEmitter {
    * @param {Number} volume The volume level to set
    */
   setVolume(volume) {
+    volume = parseInt(volume);
+    if (!Number.isInteger(volume)) throw 'Volume must be a integer';
     this.node.send({
       op: 'volume',
       guildId: this.guildId,
