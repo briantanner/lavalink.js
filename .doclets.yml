@@ -1,7 +1,0 @@
-dir: src
-articles:
-  - About: README.md
-packageJson: package.json
-branches:
-  - master
-  - develop
