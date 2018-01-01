@@ -2,11 +2,7 @@
   "name": "lavalink.js",
   "version": "0.1.1",
   "license": "MIT",
-<<<<<<< HEAD
   "description": "A Lavalink client for Discord.js",
-=======
-  "description": "A Lavalink client for eris",
->>>>>>> upstream/master
   "homepage": "https://github.com/briantanner/lavalink.js",
   "author": {
     "name": "Brian Tanner",
