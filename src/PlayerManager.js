@@ -165,7 +165,8 @@ class PlayerManager extends Map {
   onRaw(packet) {
     switch (packet.t) {
     case 'VOICE_SERVER_UPDATE':
-      this.voiceServerUpdate(packet).catch(() => null);
+      packet.d.session_id = this.client.ws.connection.sessionID;
+      this.voiceServerUpdate(packet.d).catch(() => null);
       break;
     case 'VOICE_STATE_UPDATE':
       if (packet.d.id && packet.d.id === this.client.user.id) {
