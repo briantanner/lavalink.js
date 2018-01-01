@@ -2,6 +2,7 @@
   "name": "lavalink.js",
   "version": "0.1.1",
   "license": "MIT",
+  "description": "A Lavalink client for discord.js ported from eris-lavalink",
   "homepage": "https://github.com/briantanner/lavalink.js",
   "author": {
     "name": "Brian Tanner",
@@ -18,6 +19,9 @@
   "engineStrict": true,
   "dependencies": {
     "ws": "^3.1.0"
+  },
+  "peerDependencies": {
+    "eventemitter3": "^3.0.0"
   },
   "devDependencies": {
     "discord.js": "^11.2.1",
