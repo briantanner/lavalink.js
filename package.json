@@ -2,6 +2,7 @@
   "name": "lavalink.js",
   "version": "0.1.1",
   "license": "MIT",
+  "description": "A Lavalink client for eris",
   "homepage": "https://github.com/briantanner/lavalink.js",
   "author": {
     "name": "Brian Tanner",
