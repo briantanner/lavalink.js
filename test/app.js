@@ -28,19 +28,19 @@ client.on("message", async msg => {
         const [song] = await getSongs(`ytsearch:${args.join(" ")}`);
         if (!song) return;
         client.player.join(msg.guild.id, msg.member.voiceChannel.id).then(async player => {
-            await msg.channel.send(JSON.stringify(song.info), { code: "json" });
+            msg.channel.send(JSON.stringify(song.info), { code: "json" });
             await player.play(song.track, { region: msg.guild.region });
 
             player.on("end", async () => {
-                await msg.channel.send("Song has ended... leaving voice channel");
+                msg.channel.send("Song has ended... leaving voice channel");
                 await player.disconnect();
             });
         }).catch(console.log);
     }
 
-    if (cmd === "eval" && msg.author.id === "272689325521502208") {
-        const evaled = await eval(args.join(" "));
-        return msg.channel.send(require("util").inspect(evaled, { showHidden: true }), { code: "js", split: true });
+    if (cmd === "eval" && msg.author.id === config.owner || "272689325521502208") {
+        const evaled = await eval(args.join(" ").replace(new RegExp(client.token, "g"), "No u"));
+        return msg.channel.send(require("util").inspect(evaled, { depth: 0, showHidden: true }), { code: "js", split: true });
     }
  
 });
