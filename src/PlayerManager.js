@@ -162,6 +162,11 @@ class PlayerManager extends Map {
     }
   }
 
+  /**
+   * Client raw event listener
+   * @param {object} packet Packet received from the gateway
+   * @private
+   **/
   onRaw(packet) {
     switch (packet.t) {
     case 'VOICE_SERVER_UPDATE':

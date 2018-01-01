@@ -89,6 +89,7 @@ class Player extends EventEmitter {
    * @param {string} data.guildId The guild ID to connect
    * @param {string} data.sessionId The voice connection session ID
    * @param {Object} data.event The event data from the voice server update
+   * @returns {void}
    */
   connect(data) {
     this.emit('connect');
@@ -105,6 +106,7 @@ class Player extends EventEmitter {
   /**
    * Disconnect from Lavalink
    * @param {*} [msg] An optional disconnect message
+   * @returns {void}
    */
   async disconnect(msg) {
     this.playing = false;
@@ -141,6 +143,7 @@ class Player extends EventEmitter {
 
   /**
    * Stop playing
+   * @returns {void}
    */
   stop() {
     // if (!this.playing) {
@@ -153,10 +156,6 @@ class Player extends EventEmitter {
     this.playing = false;
     this.lastTrack = this.track;
     this.track = null;
-
-    // } else {
-    //     console.error('already stopped playing');
-    // }
   }
 
   /**
@@ -171,6 +170,7 @@ class Player extends EventEmitter {
   /**
    * Used to pause/resume the player
    * @param {boolean} pause Set pause to true/false
+   * @returns {void}
    */
   setPause(pause) {
     this.node.send({
@@ -183,6 +183,7 @@ class Player extends EventEmitter {
   /**
    * Used for seeking to a track position
    * @param {Number} position The position to seek to
+   * @returns {void}
    */
   seek(position) {
     this.node.send({
@@ -195,6 +196,7 @@ class Player extends EventEmitter {
   /**
    * Set the volume of the player
    * @param {Number} volume The volume level to set
+   * @returns {void}
    */
   setVolume(volume) {
     this.node.send({
@@ -266,6 +268,7 @@ class Player extends EventEmitter {
    * @param {string} channelId Channel id for the state
    * @param {boolean} selfMute Whether the bot muted itself or not (audio sending is unaffected)
    * @param {boolean} selfDeaf Whether the bot deafened itself or not (audio receiving is unaffected)
+   * @private
    */
   updateVoiceState(channelId, selfMute, selfDeaf) {
     this.client.ws.send({

@@ -53,6 +53,7 @@ class Lavalink extends EventEmitter {
 
   /**
    * Connect to the websocket server
+   * @private
    */
   connect() {
     this.ws = new WebSocket(this.address, {
@@ -84,6 +85,7 @@ class Lavalink extends EventEmitter {
 
   /**
    * Destroy the websocket connection
+   * @private
    */
   destroy() {
     if (this.ws) {
