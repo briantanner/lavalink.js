@@ -5,7 +5,7 @@ A Lavalink client for discord.js ported from eris-lavalink
 
 **Install**
 ```
-npm install briantanner/lavalink.js
+npm install lavalink.js
 ```
 
 **Implementation**

@@ -1,6 +1,7 @@
 {
-  "name": "eris-lavalink",
+  "name": "lavalink.js",
   "version": "0.1.0",
+  "license": "MIT",
   "homepage": "https://github.com/briantanner/lavalink.js",
   "author": {
     "name": "Brian Tanner",
@@ -13,7 +14,6 @@
   "bugs": {
     "url": "https://github.com/briantanner/lavalink.js/issues"
   },
-  "private": true,
   "main": "src/index.js",
   "engineStrict": true,
   "dependencies": {
