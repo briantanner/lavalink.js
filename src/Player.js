@@ -1,6 +1,3 @@
-/**
- * Created by Julian & NoobLance on 25.05.2017.
- */
 let EventEmitter;
 
 try {
@@ -10,7 +7,6 @@ try {
 }
 
 /**
- * Represents a player connection to a lavalink node
  * @class Player
  * @extends EventEmitter
  */

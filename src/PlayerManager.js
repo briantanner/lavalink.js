@@ -1,12 +1,7 @@
-/**
- * Created by Julian & NoobLance on 25.05.2017.
- * DISCLAIMER: We reuse some eris code
- */
 const Lavalink = require('./Lavalink');
 const Player = require('./Player');
 
 /**
- * Drop in Replacement for the eris voice connection manager
  * @class PlayerManager
  * @extends Map
  */
