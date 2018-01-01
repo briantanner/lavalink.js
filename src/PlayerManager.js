@@ -2,7 +2,7 @@ const Lavalink = require('./Lavalink');
 const Player = require('./Player');
 
 /**
- * @class PlayerManager
+ * Player Manager
  * @extends Map
  * @prop {Player} baseObject The player class used to create new players
  * @prop {object} client The discord.js client

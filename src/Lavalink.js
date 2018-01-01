@@ -11,7 +11,7 @@ try {
 }
 
 /**
- * @class Lavalink
+ * Represents a Lavalink node
  * @extends EventEmitter
  * @prop {string} host The hostname for the node
  * @prop {number} port The port number for the node

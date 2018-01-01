@@ -7,7 +7,7 @@ try {
 }
 
 /**
- * @class Player
+ * Represents a player/voice connection to Lavalink
  * @extends EventEmitter
  * @prop {string} id Guild id for the player
  * @prop {PlayerManager} manager Reference to the player manager
