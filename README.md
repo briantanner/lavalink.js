@@ -3,6 +3,9 @@ lavalink.js
 
 A Lavalink client for discord.js ported from eris-lavalink
 
+**[API Documentation](https://briantanner.github.io/lavalink.js/index.html)**
+
+
 **Install**
 ```
 npm install lavalink.js
