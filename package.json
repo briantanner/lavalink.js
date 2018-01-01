@@ -18,5 +18,14 @@
   "engineStrict": true,
   "dependencies": {
     "ws": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src"
   }
 }

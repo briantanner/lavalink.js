@@ -5,7 +5,7 @@ const PlayerManager = require('./PlayerManager');
 const Lavalink = require('./Lavalink');
 
 module.exports = {
-	Player,
-	PlayerManager,
-	Lavalink,
+  Player,
+  PlayerManager,
+  Lavalink
 };
