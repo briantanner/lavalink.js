@@ -1,3 +1,7 @@
+/**
+ * Created by NoobLance & Jacz on 01.01.2018.
+ * DISCLAIMER: Direct port from eris-lavalink
+ */
 const Lavalink = require('./Lavalink');
 const Player = require('./Player');
 
@@ -5,16 +9,16 @@ const Player = require('./Player');
  * Player Manager
  * @extends Map
  * @prop {Player} baseObject The player class used to create new players
- * @prop {object} client The discord.js client
- * @prop {object} defaultRegions The default region config
- * @prop {object} regions The region config being used
+ * @prop {Object} client The discord.js client
+ * @prop {Object} defaultRegions The default region config
+ * @prop {Object} regions The region config being used
  */
 class PlayerManager extends Map {
 
   /**
    * PlayerManager constructor
    * @param {Client} client Eris client
-   * @param {Object[]} nodes The Lavalink nodes to connect to
+   * @param {Map<string, Lavalink>} nodes The Lavalink nodes to connect to
    * @param {Object} [options] Setup options
    * @param {string} [options.defaultRegion] The default region
    * @param {Number} [options.failoverRate=250] Failover rate in ms
@@ -84,8 +88,9 @@ class PlayerManager extends Map {
    * @param {string} host The hostname of the node
    */
   removeNode(host) {
-    const node = this.nodes.get(host);
     if (!host) return;
+    const node = this.nodes.get(host);
+    if (!node) return;
     node.destroy();
     this.nodes.delete(host);
     this.onDisconnect(node);
@@ -96,7 +101,7 @@ class PlayerManager extends Map {
    * @private
    */
   checkFailoverQueue() {
-    if (this.failoverQueue.length > 0) {
+    if (this.failoverQueue.length) {
       const fns = this.failoverQueue.splice(0, this.failoverLimit);
       for (const fn of fns) {
         this.processQueue(fn);
@@ -111,7 +116,7 @@ class PlayerManager extends Map {
    * @private
    */
   queueFailover(fn) {
-    if (this.failoverQueue.length > 0) {
+    if (this.failoverQueue.length) {
       this.failoverQueue.push(fn);
     } else {
       return this.processQueue(fn);
@@ -135,7 +140,7 @@ class PlayerManager extends Map {
    * @private
    */
   onError(node, err) {
-    this.client.emit(err);
+    this.client.emit('error', err);
   }
 
   /**
@@ -156,16 +161,11 @@ class PlayerManager extends Map {
    * @private
    */
   onReady() {
-    for (const player of [...this.values()]) {
+    for (const player of this.values()) {
       this.queueFailover(this.switchNode.bind(this, player));
     }
   }
 
-  /**
-   * Client raw event listener
-   * @param {object} packet Packet received from the gateway
-   * @private
-   **/
   onRaw(packet) {
     switch (packet.t) {
     case 'VOICE_SERVER_UPDATE':
@@ -188,11 +188,11 @@ class PlayerManager extends Map {
    * @param {boolean} leave Whether to leave the channel or not on our side
    */
   switchNode(player, leave) {
-    const { guildId, channelId, track } = player,
-      position = (player.state.position || 0) + (this.options.reconnectThreshold || 2000);
+    const { guildId, channelId, track } = player;
+    const position = (player.state.position || 0) + (this.options.reconnectThreshold || 2000);
 
-    const listeners = player.listeners('end'),
-      endListeners = [];
+    const listeners = player.listeners('end');
+    const endListeners = [];
 
     if (listeners && listeners.length) {
       for (const listener of listeners) {
@@ -224,8 +224,7 @@ class PlayerManager extends Map {
         this.set(guildId, player);
       })
         .catch(err => {
-          player.emit('disconnect', err);
-          player.disconnect();
+          player.disconnect(err);
         });
     });
   }
@@ -233,7 +232,7 @@ class PlayerManager extends Map {
   /**
    * Called when a message is received from the voice node
    * @param {Lavalink} node The Lavalink node
-   * @param {*} message The message received
+   * @param {Object} message The message received
    * @returns {*}
    * @private
    */
@@ -288,7 +287,7 @@ class PlayerManager extends Map {
 
       this.client.ws.send(payload);
 
-      if (payload.op === 4 && payload.d.channel_id === null) {
+      if (payload.op === 4 && !payload.d.channel_id) {
         this.delete(payload.d.guild_id);
       }
     }
@@ -303,14 +302,10 @@ class PlayerManager extends Map {
       if (!player) return;
 
       switch (message.type) {
-      case 'TrackEndEvent':
-        return player.onTrackEnd(message);
-      case 'TrackExceptionEvent':
-        return player.onTrackException(message);
-      case 'TrackStuckEvent':
-        return player.onTrackStuck(message);
-      default:
-        return player.emit('warn', `Unexpected event type: ${message.type}`);
+      case 'TrackEndEvent': return player.onTrackEnd(message);
+      case 'TrackExceptionEvent': return player.onTrackException(message);
+      case 'TrackStuckEvent': return player.onTrackStuck(message);
+      default: return player.emit('warn', `Unexpected event type: ${message.type}`);
       }
     }
     }
@@ -326,21 +321,20 @@ class PlayerManager extends Map {
    */
   async join(guildId, channelId, options, player) {
     options = options || {};
-
     player = player || this.get(guildId);
-    if (player && player.channelId !== channelId) {
-      player.switchChannel(channelId);
-      return Promise.resolve(player);
-    }
+    return new Promise(async (res, rej) => {
+      if (player && player.channelId !== channelId) {
+        player.switchChannel(channelId);
+        return res(player);
+      }
 
-    const region = this.getRegionFromData(options.region || 'us');
-    const node = await this.findIdealNode(region);
+      const region = this.getRegionFromData(options.region || 'us');
+      const node = await this.findIdealNode(region);
 
-    if (!node) {
-      return Promise.reject('No available voice nodes.');
-    }
+      if (!node) {
+        return rej('No available voice nodes.');
+      }
 
-    return new Promise((res, rej) => {
       this.pendingGuilds[guildId] = {
         channelId: channelId,
         options: options || {},
@@ -402,7 +396,7 @@ class PlayerManager extends Map {
 
   /**
   * Called by eris when a voice server update is received
-  * @param {*} data The voice server update from eris
+  * @param {Object} data The voice server update from eris
   * @private
   */
   async voiceServerUpdate(data) {
@@ -485,7 +479,7 @@ class PlayerManager extends Map {
   /**
    * Get ideal region from data
    * @param {string} endpoint Endpoint or region
-   * @returns {void}
+   * @returns {string}
    * @private
    */
   getRegionFromData(endpoint) {

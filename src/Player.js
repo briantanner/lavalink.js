@@ -1,3 +1,6 @@
+/**
+ * Created by NoobLance & Jacz on 01.01.2018.
+ */
 let EventEmitter;
 
 try {
@@ -12,13 +15,13 @@ try {
  * @prop {string} id Guild id for the player
  * @prop {PlayerManager} manager Reference to the player manager
  * @prop {Lavalink} node Lavalink node the player is connected to
- * @prop {object} client The discord.js client
+ * @prop {Object} client The discord.js client
  * @prop {string} hostname Hostname of the lavalink node
  * @prop {string} guildId Guild ID
  * @prop {string} channelId Channel ID
  * @prop {boolean} ready If the connection is ready
  * @prop {boolean} playing If the player is playing
- * @prop {object} state The lavalink player state
+ * @prop {Object} state The lavalink player state
  * @prop {string} track The lavalink track to play
  */
 class Player extends EventEmitter {
@@ -84,7 +87,7 @@ class Player extends EventEmitter {
    * @param {*} data The payload to send
    * @private
    */
-  async sendEvent(data) {
+  sendEvent(data) {
     this.receivedEvents.push(data);
     this.node.send(data);
     process.nextTick(() => this.checkEventQueue());
@@ -183,7 +186,7 @@ class Player extends EventEmitter {
     this.node.send({
       op: 'pause',
       guildId: this.guildId,
-      pause: pause
+      pause: Boolean(pause)
     });
   }
 
@@ -193,6 +196,8 @@ class Player extends EventEmitter {
    * @returns {void}
    */
   seek(position) {
+    position = parseInt(position);
+    if (!Number.isInteger(position)) throw 'Position must be a integer';
     this.node.send({
       op: 'seek',
       guildId: this.guildId,
@@ -206,6 +211,8 @@ class Player extends EventEmitter {
    * @returns {void}
    */
   setVolume(volume) {
+    volume = parseInt(volume);
+    if (!Number.isInteger(volume)) throw 'Volume must be a integer';
     this.node.send({
       op: 'volume',
       guildId: this.guildId,

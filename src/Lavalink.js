@@ -14,15 +14,15 @@ try {
  * Represents a Lavalink node
  * @extends EventEmitter
  * @prop {string} host The hostname for the node
- * @prop {number} port The port number for the node
+ * @prop {Number} port The port number for the node
  * @prop {string} address The full ws address for the node
  * @prop {string} region The region for this node
  * @prop {string} userId The client user id
- * @prop {number} numShards The total number of shards the bot is running
+ * @prop {Number} numShards The total number of shards the bot is running
  * @prop {string} password The password used to connect
  * @prop {boolean} connected If it's connected to the node
  * @prop {boolean} draining True if this node will no longer take new connections
- * @prop {object} stats The Lavalink node stats
+ * @prop {Object} stats The Lavalink node stats
  */
 class Lavalink extends EventEmitter {
 
@@ -37,6 +37,7 @@ class Lavalink extends EventEmitter {
    * @param {string} options.password The password for the Lavalink node
    * @param {Number} [options.timeout=5000] Optional timeout in ms used for the reconnect backoff
    */
+
   constructor(options) {
     super();
 
@@ -77,9 +78,7 @@ class Lavalink extends EventEmitter {
     this.ws.on('open', this.ready.bind(this));
     this.ws.on('message', this.onMessage.bind(this));
     this.ws.on('close', this.disconnectHandler);
-    this.ws.on('error', (err) => {
-      this.emit('error', err);
-    });
+    this.ws.on('error', err => this.emit('error', err));
   }
 
   /**
