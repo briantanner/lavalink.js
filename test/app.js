@@ -24,7 +24,7 @@ client.on("message", async msg => {
     const args = msg.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
     if (cmd === "play") {
-        if (!msg.member.voiceChannel) return "You need to be in a voice channel";
+        if (!msg.member.voiceChannel) return msg.channel.send("You need to be in a voice channel");
         const [song] = await getSongs(`ytsearch:${args.join(" ")}`);
         if (!song) return;
         client.player.join(msg.guild.id, msg.member.voiceChannel.id).then(async player => {

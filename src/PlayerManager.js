@@ -489,7 +489,7 @@ class PlayerManager extends Map {
     endpoint = endpoint.replace('vip-', '');
 
     for (const key in this.regions) {
-      const nodes = this.nodes.filter(n => n.region === key);
+      const nodes = [...this.nodes.values()].filter(n => n.region === key);
       if (!nodes || !nodes.length) continue;
       if (!nodes.find(n => n.connected && !n.draining)) continue;
       for (const region of this.regions[key]) {
