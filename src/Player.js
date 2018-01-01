@@ -1,5 +1,5 @@
 /**
- * Created by Julian & NoobLance on 25.05.2017.
+ * Created by NoobLance & Jacz on 01.01.2018.
  */
 let EventEmitter;
 

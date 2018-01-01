@@ -1,6 +1,6 @@
 /**
- * Created by Julian & NoobLance on 25.05.2017.
- * DISCLAIMER: We reuse some eris code
+ * Created by NoobLance & Jacz on 01.01.2018.
+ * DISCLAIMER: Direct port from eris-lavalink
  */
 const Lavalink = require('./Lavalink');
 const Player = require('./Player');
@@ -136,7 +136,7 @@ class PlayerManager extends Map {
    * @private
    */
   onError(node, err) {
-    this.client.emit(err);
+    this.client.emit('error', err);
   }
 
   /**
@@ -322,21 +322,20 @@ class PlayerManager extends Map {
    */
   async join(guildId, channelId, options, player) {
     options = options || {};
-
     player = player || this.get(guildId);
-    if (player && player.channelId !== channelId) {
-      player.switchChannel(channelId);
-      return Promise.resolve(player);
-    }
+    return new Promise(async (res, rej) => {
+      if (player && player.channelId !== channelId) {
+        player.switchChannel(channelId);
+        return res(player);
+      }
 
-    const region = this.getRegionFromData(options.region || 'us');
-    const node = await this.findIdealNode(region);
+      const region = this.getRegionFromData(options.region || 'us');
+      const node = await this.findIdealNode(region);
 
-    if (!node) {
-      return Promise.reject('No available voice nodes.');
-    }
+      if (!node) {
+        return rej('No available voice nodes.');
+      }
 
-    return new Promise((res, rej) => {
       this.pendingGuilds[guildId] = {
         channelId: channelId,
         options: options || {},
