@@ -13,6 +13,16 @@ try {
 /**
  * @class Lavalink
  * @extends EventEmitter
+ * @prop {string} host The hostname for the node
+ * @prop {number} port The port number for the node
+ * @prop {string} address The full ws address for the node
+ * @prop {string} region The region for this node
+ * @prop {string} userId The client user id
+ * @prop {number} numShards The total number of shards the bot is running
+ * @prop {string} password The password used to connect
+ * @prop {boolean} connected If it's connected to the node
+ * @prop {boolean} draining True if this node will no longer take new connections
+ * @prop {object} stats The Lavalink node stats
  */
 class Lavalink extends EventEmitter {
 

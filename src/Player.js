@@ -9,6 +9,17 @@ try {
 /**
  * @class Player
  * @extends EventEmitter
+ * @prop {string} id Guild id for the player
+ * @prop {PlayerManager} manager Reference to the player manager
+ * @prop {Lavalink} node Lavalink node the player is connected to
+ * @prop {object} client The discord.js client
+ * @prop {string} hostname Hostname of the lavalink node
+ * @prop {string} guildId Guild ID
+ * @prop {string} channelId Channel ID
+ * @prop {boolean} ready If the connection is ready
+ * @prop {boolean} playing If the player is playing
+ * @prop {object} state The lavalink player state
+ * @prop {string} track The lavalink track to play
  */
 class Player extends EventEmitter {
 
@@ -27,15 +38,15 @@ class Player extends EventEmitter {
   constructor(id, { hostname, guildId, channelId, client, node, manager, options }) {
     super();
     this.id = id;
+    this.client = client;
+    this.manager = manager || null;
     this.node = node;
     this.hostname = hostname;
     this.guildId = guildId;
     this.channelId = channelId;
-    this.manager = manager || null;
     this.options = options;
     this.ready = false;
     this.playing = false;
-    this.client = client;
     this.state = {};
     this.track = null;
     this.receivedEvents = [];

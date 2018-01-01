@@ -4,6 +4,10 @@ const Player = require('./Player');
 /**
  * @class PlayerManager
  * @extends Map
+ * @prop {Player} baseObject The player class used to create new players
+ * @prop {object} client The discord.js client
+ * @prop {object} defaultRegions The default region config
+ * @prop {object} regions The region config being used
  */
 class PlayerManager extends Map {
 
