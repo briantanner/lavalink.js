@@ -66,9 +66,7 @@ class Lavalink extends EventEmitter {
     this.ws.on('open', this.ready.bind(this));
     this.ws.on('message', this.onMessage.bind(this));
     this.ws.on('close', this.disconnectHandler);
-    this.ws.on('error', (err) => {
-      this.emit('error', err);
-    });
+    this.ws.on('error', err => this.emit('error', err));
   }
 
   /**

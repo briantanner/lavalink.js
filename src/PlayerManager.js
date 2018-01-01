@@ -85,8 +85,9 @@ class PlayerManager extends Map {
    * @param {string} host The hostname of the node
    */
   removeNode(host) {
-    const node = this.nodes.get(host);
     if (!host) return;
+    const node = this.nodes.get(host);
+    if (!node) return;
     node.destroy();
     this.nodes.delete(host);
     this.onDisconnect(node);
@@ -97,7 +98,7 @@ class PlayerManager extends Map {
    * @private
    */
   checkFailoverQueue() {
-    if (this.failoverQueue.length > 0) {
+    if (this.failoverQueue.length) {
       const fns = this.failoverQueue.splice(0, this.failoverLimit);
       for (const fn of fns) {
         this.processQueue(fn);
@@ -112,7 +113,7 @@ class PlayerManager extends Map {
    * @private
    */
   queueFailover(fn) {
-    if (this.failoverQueue.length > 0) {
+    if (this.failoverQueue.length) {
       this.failoverQueue.push(fn);
     } else {
       return this.processQueue(fn);
@@ -157,7 +158,7 @@ class PlayerManager extends Map {
    * @private
    */
   onReady() {
-    for (const player of [...this.values()]) {
+    for (const player of this.values()) {
       this.queueFailover(this.switchNode.bind(this, player));
     }
   }
@@ -184,11 +185,11 @@ class PlayerManager extends Map {
    * @param {boolean} leave Whether to leave the channel or not on our side
    */
   switchNode(player, leave) {
-    const { guildId, channelId, track } = player,
-      position = (player.state.position || 0) + (this.options.reconnectThreshold || 2000);
+    const { guildId, channelId, track } = player;
+    const position = (player.state.position || 0) + (this.options.reconnectThreshold || 2000);
 
-    const listeners = player.listeners('end'),
-      endListeners = [];
+    const listeners = player.listeners('end');
+    const endListeners = [];
 
     if (listeners && listeners.length) {
       for (const listener of listeners) {
@@ -220,8 +221,7 @@ class PlayerManager extends Map {
         this.set(guildId, player);
       })
         .catch(err => {
-          player.emit('disconnect', err);
-          player.disconnect();
+          player.disconnect(err);
         });
     });
   }
@@ -229,7 +229,7 @@ class PlayerManager extends Map {
   /**
    * Called when a message is received from the voice node
    * @param {Lavalink} node The Lavalink node
-   * @param {*} message The message received
+   * @param {Object} message The message received
    * @returns {*}
    * @private
    */
@@ -284,7 +284,7 @@ class PlayerManager extends Map {
 
       this.client.ws.send(payload);
 
-      if (payload.op === 4 && payload.d.channel_id === null) {
+      if (payload.op === 4 && !payload.d.channel_id) {
         this.delete(payload.d.guild_id);
       }
     }
@@ -299,14 +299,10 @@ class PlayerManager extends Map {
       if (!player) return;
 
       switch (message.type) {
-      case 'TrackEndEvent':
-        return player.onTrackEnd(message);
-      case 'TrackExceptionEvent':
-        return player.onTrackException(message);
-      case 'TrackStuckEvent':
-        return player.onTrackStuck(message);
-      default:
-        return player.emit('warn', `Unexpected event type: ${message.type}`);
+      case 'TrackEndEvent': return player.onTrackEnd(message);
+      case 'TrackExceptionEvent': return player.onTrackException(message);
+      case 'TrackStuckEvent': return player.onTrackStuck(message);
+      default: return player.emit('warn', `Unexpected event type: ${message.type}`);
       }
     }
     }
@@ -397,7 +393,7 @@ class PlayerManager extends Map {
 
   /**
   * Called by eris when a voice server update is received
-  * @param {*} data The voice server update from eris
+  * @param {Object} data The voice server update from eris
   * @private
   */
   async voiceServerUpdate(data) {
@@ -480,7 +476,7 @@ class PlayerManager extends Map {
   /**
    * Get ideal region from data
    * @param {string} endpoint Endpoint or region
-   * @returns {void}
+   * @returns {string}
    * @private
    */
   getRegionFromData(endpoint) {
