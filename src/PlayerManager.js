@@ -1,4 +1,4 @@
-/**
+/*
  * Created by NoobLance & Jacz on 01.01.2018.
  * DISCLAIMER: Direct port from eris-lavalink
  */
@@ -17,7 +17,7 @@ class PlayerManager extends Map {
 
   /**
    * PlayerManager constructor
-   * @param {Client} client Eris client
+   * @param {Client} client Discord.js client
    * @param {Map<string, Lavalink>} nodes The Lavalink nodes to connect to
    * @param {Object} [options] Setup options
    * @param {string} [options.defaultRegion] The default region
@@ -76,7 +76,7 @@ class PlayerManager extends Map {
       password: options.password
     });
 
-    node.on('error', this.onError.bind(this, node));
+    node.on('error', err => this.client.emit('error', err));
     node.on('disconnect', this.onDisconnect.bind(this, node));
     node.on('message', this.onMessage.bind(this, node));
 
@@ -131,16 +131,6 @@ class PlayerManager extends Map {
   processQueue(fn) {
     fn();
     setTimeout(() => this.checkFailoverQueue(), this.failoverRate);
-  }
-
-  /**
-   * Called when an error is received from a Lavalink node
-   * @param {Lavalink} node The Lavalink node
-   * @param {string|Error} err The error received
-   * @private
-   */
-  onError(node, err) {
-    this.client.emit('error', err);
   }
 
   /**

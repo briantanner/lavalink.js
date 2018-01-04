@@ -1,5 +1,3 @@
-'use strict';
-
 const WebSocket = require('ws');
 
 let EventEmitter;
