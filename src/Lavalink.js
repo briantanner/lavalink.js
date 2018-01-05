@@ -28,11 +28,11 @@ class Lavalink extends EventEmitter {
    * Lavalink constructor
    * @param {Object} options Lavalink node options
    * @param {string} options.host The hostname to connect to
-   * @param {string} options.port The port to connect with
+   * @param {Number} options.port The port to connect with
    * @param {string} options.region The region of the node
    * @param {Number} options.numShards The number of shards the bot is running
    * @param {string} options.userId The user id of the bot
-   * @param {string} options.password The password for the Lavalink node
+   * @param {string} [options.password='youshallnotpass'] The password for the Lavalink node
    * @param {Number} [options.timeout=5000] Optional timeout in ms used for the reconnect backoff
    */
 

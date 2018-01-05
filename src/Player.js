@@ -38,7 +38,7 @@ class Player extends EventEmitter {
    * @param {Shard} data.shard The eris shard associated with this player
    * @param {Object} [data.options] Additional passed from the user to the player
    */
-  constructor(id, { hostname, guildId, channelId, client, node, manager, options }) {
+  constructor(id, { hostname, guildId, channelId, client, node, manager, options } = {}) {
     super();
     this.id = id;
     this.client = client;
