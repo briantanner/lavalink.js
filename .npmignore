@@ -28,4 +28,9 @@ test/
 .DS_Store
 .env
 
+# Custom
 package-lock.json
+.eslintignore
+.eslintrc.json
+docs
+tslint.json

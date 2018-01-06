@@ -2,7 +2,8 @@
   "name": "lavalink.js",
   "version": "0.1.1",
   "license": "MIT",
-  "description": "A Lavalink client for eris",
+  "description": "A Lavalink client for Discord.js",
+  "types": "typings/index.d.ts",
   "homepage": "https://github.com/briantanner/lavalink.js",
   "author": {
     "name": "Brian Tanner",
@@ -16,19 +17,24 @@
     "url": "https://github.com/briantanner/lavalink.js/issues"
   },
   "main": "src/index.js",
-  "engineStrict": true,
   "dependencies": {
     "ws": "^3.1.0"
   },
+  "peerDependencies": {
+    "eventemitter3": "^3.0.0"
+  },
   "devDependencies": {
+    "@types/node": "^8.5.5",
     "discord.js": "^11.2.1",
     "docdash": "^0.4.0",
     "eslint": "^4.14.0",
     "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0"
+    "eslint-plugin-promise": "^3.6.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
   },
   "scripts": {
-    "lint": "eslint src",
-    "lint:fix": "eslint --fix src"
+    "lint": "eslint src && tslint 'typings/*.ts'",
+    "lint:fix": "eslint --fix src test && tslint --fix 'typings/*.ts'"
   }
 }
